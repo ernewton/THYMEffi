@@ -60,7 +60,7 @@ def qradec(tic,ra,dec,datadir = '/Volumes/UTOld/tessdata/',xsize=31,ysize=31,sec
     zip_ref.close()
     ##now write in the corresponding log
     datestamp = time.strftime('%Y%m%d-%H:%M:%S', time.localtime(time.time()))
-    logfile = open(datalocation+'tic'+str(tic)+'_dllog.txt','ab')
+    logfile = open(datalocation+'tic'+str(tic)+'_dllog.txt','a')
     logfile.write(datestamp+' '+str(ra)+' '+str(dec)+' '+str(xsize)+'x'+str(ysize)+' '+str(sector)+' \n')
     logfile.close()
 
