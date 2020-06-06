@@ -3,12 +3,12 @@ import pdb,glob,os,sys,time,pickle
 from astropy.io import fits
 import matplotlib.pyplot as plt
 import extract_phot 
-from readcol import readcol
 import querytesscut
+from astropy.table import Table
 
 ##input file:
 infile = 'targetlists/onlythegoodstuff.csv' ##put your target list here
-indata = readcol(infile,fsep=',',asRecArray=True)
+indata = Table.read(infile).to_pandas().to_records()
 
 datadir = 'datastore/'
 runsector = None ##run with runsector=None to make a first population by doing everything
