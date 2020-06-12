@@ -7,7 +7,7 @@ import querytesscut
 from astropy.table import Table
 
 ##input file:
-infile = 'targetlists/onlythegoodstuff.csv' ##put your target list here
+infile = 'targetlists/hyades_rizz.csv' ##put your target list here
 indata = Table.read(infile).to_pandas().to_records()
 
 datadir = 'datastore/'
