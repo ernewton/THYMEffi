@@ -184,10 +184,9 @@ def tess_gauss_fit(im,sig_im,centroidmode='fixed',xsigcmode=0.5,stopper=False):
     imx,imy = np.meshgrid(yvect,xvect)
     #pdb.set_trace()
     if len(xvect) % 2 != 0:
-        xstart = len(xvect)/2 
-    else: xstart = len(xvect)/2-1
-    
-    
+        xstart = (len(xvect)+1)/2
+    else: xstart = len(xvect)/2
+    xstart = int(xstart)
     
     #
     ##adjust the starting position to the brightest pixel in a small distance from the initial guess
@@ -311,10 +310,11 @@ def run_extraction(filename,resultfilename,aperture_radius=3,plotmovie=False,con
     for i in range(len(hdu[1].data)): 
         qual[i]    = hdu[1].data[i]['QUALITY']*1
         
-
-        if (np.isnan(hdu[1].data[i][4]).any() == False) & (qual[i] == 0) & (np.max( hdu[1].data[i][4]) > 0.0): 
+        if (np.isnan(hdu[1].data[i][4]).any() == False) & (qual[i] == 0) & (np.nanmax( hdu[1].data[i][4]) > 0.0):
             tot_image +=  hdu[1].data[i][4]*1.0
             tot_image_err +=  hdu[1].data[i][5]*1.0
+    tot_image[np.isnan(tot_image)] = 0.
+    tot_image_err[np.isnan(tot_image)] = 0.
     #find all stars
     
     threshold_mult=0.01
@@ -503,7 +503,9 @@ def run_extraction(filename,resultfilename,aperture_radius=3,plotmovie=False,con
     if bgtype =='simple': 
         print('Using median of non-star pixels as sky level')
         bg=standard_medim*1.0
-    
+    if bgtype == 'cubic':
+        print("Using cubic bkg interpolation")
+        
     ##diagnosticplot lcs, commented out ususally     
     #lc1 = (fluxcirc[okok]-interpbg[okok])/np.median(fluxcirc[okok]-interpbg[okok])
     #lc2 =(fluxcirc[okok]-bg[okok])/np.median(fluxcirc[okok]-bg[okok])
